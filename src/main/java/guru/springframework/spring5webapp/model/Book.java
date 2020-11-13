@@ -1,8 +1,7 @@
 package guru.springframework.spring5webapp.model;
 
-import com.sun.tools.javac.comp.Resolve;
-
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -18,15 +17,27 @@ public class Book {
     @ManyToMany
     @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
-    private Set<Author> authors;
+    private Set<Author> authors = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "publisher_book", joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "publisher_id"))
+    private Set<Publisher> publishers = new HashSet<>();
+
 
     public Book() {
     }
 
-    public Book(String title, String isbn, Set<Author> authors) {
+    public Book(String title, String isbn) {
+        this.title = title;
+        this.isbn = isbn;
+    }
+
+    public Book(String title, String isbn, Set<Author> authors, Set<Publisher> publishers) {
         this.title = title;
         this.isbn = isbn;
         this.authors = authors;
+        this.publishers = publishers;
     }
 
     public Long getId() {
@@ -61,6 +72,14 @@ public class Book {
         this.authors = authors;
     }
 
+    public Set<Publisher> getPublishers() {
+        return publishers;
+    }
+
+    public void setPublishers(Set<Publisher> publishers) {
+        this.publishers = publishers;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
@@ -68,6 +87,7 @@ public class Book {
                 ", title='" + title + '\'' +
                 ", isbn='" + isbn + '\'' +
                 ", authors=" + authors +
+                ", publishers=" + publishers +
                 '}';
     }
 
