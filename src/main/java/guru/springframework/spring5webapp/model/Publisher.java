@@ -16,15 +16,12 @@ public class Publisher {
     private Long id;
 
     private String name;
+    private String city;
+    private String state;
 
-    @ManyToMany(mappedBy = "publishers")
+    @OneToMany
+    @JoinColumn(name = "publisher_id")
     private Set<Book> books = new HashSet<>();
-
-    @ManyToMany
-    @JoinTable(name = "author_publisher", joinColumns = @JoinColumn(name = "publisher_id"),
-            inverseJoinColumns = @JoinColumn(name = "author_id"))
-    private Set<Author> authors = new HashSet<>();
-
 
     public Publisher() {
     }
@@ -33,10 +30,10 @@ public class Publisher {
         this.name = name;
     }
 
-    public Publisher(String name, Set<Book> books, Set<Author> authors) {
+    public Publisher(String name, String city, String state) {
         this.name = name;
-        this.books = books;
-        this.authors = authors;
+        this.city = city;
+        this.state = state;
     }
 
     public Long getId() {
@@ -63,21 +60,12 @@ public class Publisher {
         this.books = books;
     }
 
-    public Set<Author> getAuthors() {
-        return authors;
-    }
-
-    public void setAuthors(Set<Author> authors) {
-        this.authors = authors;
-    }
-
     @Override
     public String toString() {
         return "Publisher{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", books=" + books +
-                ", authors=" + authors +
                 '}';
     }
 

@@ -29,35 +29,38 @@ public class BootStrapData implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Publisher oreilly = new Publisher("OReilly");
+        Publisher oreilly = new Publisher("OReilly", "New York City", "New York State");
+        publisherRepository.save(oreilly);
+
+        System.out.println("Number of publishers: " + publisherRepository.count());
 
         Author eric = new Author("Eric", "Evans");
-        oreilly.getAuthors().add(eric);
         Book ddd = new Book("Domain Driven Design", "123123");
-        oreilly.getBooks().add(ddd);
-
         eric.getBooks().add(ddd);
         ddd.getAuthors().add(eric);
+
+        ddd.setPublisher(oreilly);
+        oreilly.getBooks().add(ddd);
 
         authorRepository.save(eric);
         bookRepository.save(ddd);
         publisherRepository.save(oreilly);
 
         Author rod = new Author("Rod", "Johnson");
-        oreilly.getAuthors().add(rod);
         Book noEJB = new Book("J2EE Development without EJB", "3939459459");
-        oreilly.getBooks().add(noEJB);
         rod.getBooks().add(noEJB);
         noEJB.getAuthors().add(rod);
+
+        noEJB.setPublisher(oreilly);
+        oreilly.getBooks().add(noEJB);
 
         authorRepository.save(rod);
         bookRepository.save(noEJB);
         publisherRepository.save(oreilly);
 
         System.out.println("Started in Boostrap");
-        System.out.println("Number of publishers: " + publisherRepository.count());
         System.out.println("Number of authors: " + authorRepository.count());
-        System.out.println("Number of books: " + bookRepository.count());
+        System.out.println("Publisher Number of books: " + oreilly.getBooks().size());
 
 
 
